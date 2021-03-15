@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="David Ying">
+
+
+    <meta name="subtitle" content="爱情好像流沙">
+
+
+    <meta name="description" content="没有描述哦">
+
+
+
+<title>Hey David</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">David&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">David&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title"></h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">David Ying</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">March 1, 2021&nbsp;&nbsp;21:09:35</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Android-Room-LiveData-ViewModel的学习"><a href="#Android-Room-LiveData-ViewModel的学习" class="headerlink" title="Android Room,LiveData,ViewModel的学习"></a>Android Room,LiveData,ViewModel的学习</h1><p>在<strong>第一行代码</strong>的学习中，android提供了与内嵌式数据库sqlite的API，也提供了同样为持久化技术的SharedPrefences。<br>两者各有优劣，SharedPrefences交互方便但是使用xml的格式存储，可以被外部查看，数据存储不安全。<br>sqlite的缺点在于交互不便，于是广大的开发者大军写出了很多关于sqlite的开源库，也包括<strong>第一行代码</strong>作者guolin大神在书中提及自己写出的litepal。同时google也推出了自己的数据库映射库（暂且这么称吧）。<br>通过Android Training的Lesson10关于Room,LiveData,ViewModel的使用,我对Room等有了初步的理解。<br>下文将会讲述一下比较方便的Room使用方法</p>
+<p><img src="https://developer.android.com/codelabs/android-training-livedata-viewmodel/img/fd28069527c8d615.png"></p>
+<p>这张图很清晰地说明了Room的实现以及便捷调用</p>
+<ol>
+<li>Entity 实现数据库一张表的实际类</li>
+<li>Dao 编写调用数据库的接口</li>
+<li>RoomDatabase 实现这个数据库的实际类</li>
+<li>Repository 整理Dao接口的API</li>
+<li>LiveData 与 ViewModel则与和具体的逻辑有关</li>
+</ol>
+<hr>
+<h2 id="Entity-实现数据库一张表的实际类"><a href="#Entity-实现数据库一张表的实际类" class="headerlink" title="Entity 实现数据库一张表的实际类"></a>Entity 实现数据库一张表的实际类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Entity(tableName = &quot;word_table&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Word</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PrimaryKey</span></span><br><span class="line">    <span class="meta">@NonNull</span></span><br><span class="line">    <span class="meta">@ColumnInfo(name = &quot;word&quot;, typeAffinity = ColumnInfo.TEXT)</span></span><br><span class="line">    <span class="keyword">public</span> String mWord;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@NonNull</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getWord</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> mWord;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Word</span><span class="params">(<span class="meta">@NonNull</span> String mWord)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.mWord = mWord;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Entity代表了这是一个实体类，tableName是表名，并用mWord来作为word_table表的主键（@PrimaryKey），name设置列名，typeAffinity设置这一列的类型<br>在我的观察下，Room使用了大量的注解，关于Java语言注解（<strong>annotation</strong>）是我Java知识的漏洞，可以作为之后一段时间的学习内容。</p>
+<hr>
+<h2 id="Dao-编写调用数据库的接口"><a href="#Dao-编写调用数据库的接口" class="headerlink" title="Dao 编写调用数据库的接口"></a>Dao 编写调用数据库的接口</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Dao</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">WordDao</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Insert(onConflict = OnConflictStrategy.IGNORE)</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(Word word)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Query(&quot;DELETE FROM word_table&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">deleteAll</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Query(&quot;SELECT * FROM word_table ORDER BY word ASC&quot;)</span></span><br><span class="line">    LiveData&lt;List&lt;Word&gt;&gt; getAllWords();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Query(&quot;SELECT * FROM word_table LIMIT 1&quot;)</span></span><br><span class="line">    Word[] geAnyWord();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Delete</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">deleteWord</span><span class="params">(Word word)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Dao代表了这是一个可操作的接口类<br>每个方法上边标注的注解与SQL语句代表这些方法的操作<br>熟悉MySql的同学一定很容易就能明白这些，其中getAnyWord这个方法只会返回最多一个对象，是用来判断数据库是否为空的方法</p>
+<hr>
+<h2 id="RoomDatabase-实现这个数据库的实际类"><a href="#RoomDatabase-实现这个数据库的实际类" class="headerlink" title="RoomDatabase 实现这个数据库的实际类"></a>RoomDatabase 实现这个数据库的实际类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Database(entities = &#123;Word.class&#125;, version = 1, exportSchema = false)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">WordRoomDatabase</span> <span class="keyword">extends</span> <span class="title">RoomDatabase</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String DATABASE_NAME = <span class="string">&quot;word_database&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> WordRoomDatabase INSTANCE;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> WordDao <span class="title">wordDao</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> WordRoomDatabase <span class="title">getDatabase</span><span class="params">(<span class="keyword">final</span> Context context)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (INSTANCE == <span class="keyword">null</span>) &#123;</span><br><span class="line">             INSTANCE = Room.databaseBuilder(context.getApplicationContext(),</span><br><span class="line">                     WordRoomDatabase.class, DATABASE_NAME)</span><br><span class="line">                     .fallbackToDestructiveMigration()</span><br><span class="line">                     .addCallback(mCallBack)</span><br><span class="line">                     .build();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> RoomDatabase.Callback mCallBack = <span class="keyword">new</span> RoomDatabase.Callback() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onOpen</span><span class="params">(<span class="meta">@NonNull</span> SupportSQLiteDatabase db)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>.onOpen(db);</span><br><span class="line">            <span class="keyword">new</span> PopulateDbTask(INSTANCE).execute();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">PopulateDbTask</span> <span class="keyword">extends</span> <span class="title">AsyncTask</span>&lt;<span class="title">Void</span>, <span class="title">Void</span>, <span class="title">Void</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> WordDao mDao;</span><br><span class="line"></span><br><span class="line">        String[] words = &#123;<span class="string">&quot;hello&quot;</span>, <span class="string">&quot;world&quot;</span>, <span class="string">&quot;and&quot;</span>, <span class="string">&quot;android&quot;</span>&#125;;</span><br><span class="line"></span><br><span class="line">        PopulateDbTask(WordRoomDatabase db) &#123;</span><br><span class="line">            mDao = db.wordDao();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> Void <span class="title">doInBackground</span><span class="params">(Void... voids)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (mDao.geAnyWord().length &lt; <span class="number">1</span>) &#123;</span><br><span class="line">                <span class="keyword">for</span> (String s : words) &#123;</span><br><span class="line">                    Word word = <span class="keyword">new</span> Word(s);</span><br><span class="line">                    mDao.insert(word);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>RoomDatabase编写就复杂很多了，首先要实现一个继承于RoomDatabase的抽象类。<br>@Database(entities = {Word.class}, version = 1, exportSchema = false)代表了这是一个数据库类，entities的花括号要包含这个数据库中包含的表<br>同时基于设计模式单例模式与逻辑考虑，建议只有一个数据库对象即上面代码所实现的那个方法，同时注意到这个方法是synchronized（同步的）因为对于数据的库的访问不能在主线程中进行，这也是设置同步方法和后面Repository需要实现的原因<br>最最重要的是在这个类中要提供接口的方法也就是wordDao();<br>至于后面的onOpen并不是必须要实现的回调</p>
+<hr>
+<h2 id="Repository-整理Dao接口的API"><a href="#Repository-整理Dao接口的API" class="headerlink" title="Repository 整理Dao接口的API"></a>Repository 整理Dao接口的API</h2><p>关于上面的内容其实有人要问了，Dao接口已经实现很方便的接口，为什么要加一个Repository来整理接口了，不是多此一举吗<br>原因就在于访问数据库不能放在主线程，所以Dao的接口还不能直接调用，得放在自己编写的Thread类或者AsyncTask类里面，所以需要一个Repository来整理Dao接口的API</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WordRepository</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> WordDao mWordDao;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> LiveData&lt;List&lt;Word&gt;&gt; mAllWords;</span><br><span class="line"></span><br><span class="line">    WordRepository(Application application) &#123;</span><br><span class="line">        WordRoomDatabase db = WordRoomDatabase.getDatabase(application);</span><br><span class="line">        mWordDao = db.wordDao();</span><br><span class="line">        mAllWords = mWordDao.getAllWords();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(Word word)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> InsertAsyncTask(mWordDao).execute(word);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteAll</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> DeleteAllWordTask(mWordDao).execute();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteWord</span><span class="params">(Word word)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> DeleteWordTask(mWordDao).execute(word);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">InsertAsyncTask</span> <span class="keyword">extends</span> <span class="title">AsyncTask</span>&lt;<span class="title">Word</span>, <span class="title">Void</span>, <span class="title">Void</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> WordDao mAsyncTaskDao;</span><br><span class="line"></span><br><span class="line">        InsertAsyncTask(WordDao dao) &#123;</span><br><span class="line">            mAsyncTaskDao = dao;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> Void <span class="title">doInBackground</span><span class="params">(<span class="keyword">final</span> Word... words)</span> </span>&#123;</span><br><span class="line">            mAsyncTaskDao.insert(words[<span class="number">0</span>]);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">DeleteAllWordTask</span> <span class="keyword">extends</span> <span class="title">AsyncTask</span>&lt;<span class="title">Void</span>, <span class="title">Void</span>, <span class="title">Void</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> WordDao mAsyncTaskDao;</span><br><span class="line"></span><br><span class="line">        DeleteAllWordTask(WordDao dao) &#123;</span><br><span class="line">            mAsyncTaskDao = dao;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> Void <span class="title">doInBackground</span><span class="params">(Void... voids)</span> </span>&#123;</span><br><span class="line">            mAsyncTaskDao.deleteAll();</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">DeleteWordTask</span> <span class="keyword">extends</span> <span class="title">AsyncTask</span>&lt;<span class="title">Word</span>, <span class="title">Void</span>, <span class="title">Void</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> WordDao mAsyncTaskDao;</span><br><span class="line"></span><br><span class="line">        DeleteWordTask(WordDao dao) &#123;</span><br><span class="line">            mAsyncTaskDao = dao;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">protected</span> Void <span class="title">doInBackground</span><span class="params">(Word... words)</span> </span>&#123;</span><br><span class="line">            mAsyncTaskDao.deleteWord(words[<span class="number">0</span>]);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> LiveData&lt;List&lt;Word&gt;&gt; getAllWords() &#123;</span><br><span class="line">        <span class="keyword">return</span> mAllWords;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如上所示，Repository把其他线程的操作进行做了整理这样写代码的人才能更方便地访问数据库</p>
+<hr>
+<h2 id="LiveData-与-ViewModel则与和具体的逻辑有关"><a href="#LiveData-与-ViewModel则与和具体的逻辑有关" class="headerlink" title="LiveData 与 ViewModel则与和具体的逻辑有关"></a>LiveData 与 ViewModel则与和具体的逻辑有关</h2><p>  关于LiveData 与 ViewModel 在本文就不多阐述，它是用来与UI界面交互的类</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WordViewModel</span> <span class="keyword">extends</span> <span class="title">AndroidViewModel</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> WordRepository mRepository;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> LiveData&lt;List&lt;Word&gt;&gt; mAllWords;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">WordViewModel</span><span class="params">(Application application)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(application);</span><br><span class="line"></span><br><span class="line">        mRepository = <span class="keyword">new</span> WordRepository(application);</span><br><span class="line">        mAllWords = mRepository.getAllWords();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> LiveData&lt;List&lt;Word&gt;&gt; getAllWords() &#123;</span><br><span class="line">        <span class="keyword">return</span> mAllWords;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(Word word)</span> </span>&#123;</span><br><span class="line">        mRepository.insert(word);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteAll</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        mRepository.deleteAll();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteWord</span><span class="params">(Word word)</span> </span>&#123;</span><br><span class="line">        mRepository.deleteWord(word);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p>有了以上的步骤，我们就能与数据库方便的交流了</p>
+<p>以上就是我最近对于Room的理解与使用</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>David Ying</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://yingkecheng.github.io/2021/03/01/Android%20Room,LiveData,ViewModel%E7%9A%84%E5%AD%A6%E4%B9%A0/">http://yingkecheng.github.io/2021/03/01/Android%20Room,LiveData,ViewModel%E7%9A%84%E5%AD%A6%E4%B9%A0/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>似乎对有些事情疲惫了</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2021/03/02/request/"></a>
+            
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© David Ying | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
