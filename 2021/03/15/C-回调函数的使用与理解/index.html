@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh_Hans">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="David Ying">
+
+
+    <meta name="subtitle" content="黑夜问白天">
+
+
+    <meta name="description" content="没有描述哦">
+
+
+
+<title>C++ 回调函数的使用与理解 | Hey David</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">David&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">David&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">C++ 回调函数的使用与理解</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">David Ying</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">March 15, 2021&nbsp;&nbsp;19:01:57</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>在学习esp32的BleScan过程中，我遇到了一些由C++编写的回调函数。回调函数就是在程序进行到某一个条件时，调用注册的回调函数，不同于Java使用接口作为回调函数，C++的指针机制使得编写程序回调时不如Java来的轻松简单，首先就要回顾一下，C++的函数指针</p>
+<h2 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a>函数指针</h2><p>函数指针的类型由返回类型和形参类型共同决定，如</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">lengthCompare</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp;, <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp;)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>是一个返回类型为<code>bool</code>，形参类型为<code>(const std::string&amp;, const std::string&amp;)</code>的函数</p>
+<p>同样我们可以声明一个指向这种类型的函数的指针，只要把函数名换成指针，如</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> (*pf) (<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp;, <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp;);</span><br></pre></td></tr></table></figure>
+
+<p>在声明过后这样一个指针后，就可以将同样类型的函数赋值给这个指针，当我们把函数名当作一个值来使用时，函数会自动转换为指针</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pf = lengthCompare;</span><br></pre></td></tr></table></figure>
+
+<p>一次我们可以用另一个名字来使用<code>lengthComapre</code>这个函数</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pf(<span class="string">&quot;hey&quot;</span>, <span class="string">&quot;David&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>此外函数指针还可以作为函数返回类型，以及形参类型，另外c++的一些小细节，这里就不赘述了</p>
+<h2 id="回调函数"><a href="#回调函数" class="headerlink" title="回调函数"></a>回调函数</h2><p><strong>概念</strong>: 回调函数就是一个通过函数指针调用的函数。如果你把函数指针作为参数传递给另一个函数，当这个指针被用来调用其所指向的函数时，我们就说这是回调函数。回调函数不是由该函数的实现方直接调用，而是在特定的事件或条件发生时由另外的一方调用的，<strong>用于对该事件或条件进行响应</strong>。</p>
+<p>回调函数机制：</p>
+<ol>
+<li>定义函数</li>
+<li>给调用者注册函数</li>
+<li>特定事件或条件发生，调用者调用函数</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ctime&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> CallBack = <span class="keyword">void</span> (*) (<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp;, <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义回调函数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">callBack</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; str1, <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; str2)</span></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; str1 + <span class="string">&quot; &quot;</span> + str2 &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">delay</span><span class="params">(<span class="keyword">int</span> ms)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">clock_t</span> now = clock();</span><br><span class="line">    <span class="keyword">while</span> (clock() - now &lt; ms) &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RandomTest</span> &#123;</span></span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">setCallBack</span><span class="params">(CallBack callBack)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>-&gt;mCallBack = callBack;</span><br><span class="line">        &#125;</span><br><span class="line">        RandomTest() = <span class="keyword">default</span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (mCallBack == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">                <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">&quot;no call back&quot;</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span> (cnt &lt; <span class="number">20</span>) &#123;</span><br><span class="line">                delay(<span class="number">2000</span>);</span><br><span class="line">                <span class="keyword">int</span> x = rand() % <span class="number">10</span>;</span><br><span class="line">                <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; x &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">                <span class="keyword">if</span> (x == <span class="number">5</span>) &#123;</span><br><span class="line">                    <span class="comment">// 满足条件，实现回调</span></span><br><span class="line">                    mCallBack(<span class="string">&quot;hey&quot;</span>, <span class="string">&quot;David&quot;</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                ++cnt;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        CallBack mCallBack = <span class="literal">nullptr</span>;</span><br><span class="line">&#125;;</span><br><span class="line">RandomTest test = RandomTest();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 注册回调</span></span><br><span class="line">    test.setCallBack(callBack);</span><br><span class="line">    test.run();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里我先放上一个小例子</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义回调函数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">callBack</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; str1, <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; str2)</span></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; str1 + <span class="string">&quot; &quot;</span> + str2 &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 注册回调</span></span><br><span class="line">test.setCallBack(callBack);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 满足条件，实现回调</span></span><br><span class="line">mCallBack(<span class="string">&quot;hey&quot;</span>, <span class="string">&quot;David&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这就是简单的回调函数的实现，它的原理就是传递函数的地址，来实现在单线程的中的异步操作，这在我目前学习esp8266与esp32中广泛使用。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>David Ying</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://yingkecheng.github.io/2021/03/15/C-%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%8E%E7%90%86%E8%A7%A3/">http://yingkecheng.github.io/2021/03/15/C-%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0%E7%9A%84%E4%BD%BF%E7%94%A8%E4%B8%8E%E7%90%86%E8%A7%A3/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>似乎对有些事情疲惫了</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2021/03/15/%E5%A4%9C%E8%B0%883-3/">夜谈3.3</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© David Ying | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
