@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Keil 5.38 安装最近在给电脑安装Keil MDK的时候，使用原来的 keygen.exe 后，发现编译代码会出现的问题，这是因为 keygen.exe 产生的 license 到 2020 过期，可以在网络上搜索 keygen2032 相关软件，它产生的 license 可以使用至 2032 年。 当我们使用 STM32CubeMX 生成 MDK-ARM 代码后，编译出现 *** Targ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Keil 5.38 与 Arm Compiler 5 安装">
+<meta property="og:url" content="http://example.com/2023/04/08/5-38-Keil%E4%B8%8EArm-Compiler-5%E5%AE%89%E8%A3%85/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Keil 5.38 安装最近在给电脑安装Keil MDK的时候，使用原来的 keygen.exe 后，发现编译代码会出现的问题，这是因为 keygen.exe 产生的 license 到 2020 过期，可以在网络上搜索 keygen2032 相关软件，它产生的 license 可以使用至 2032 年。 当我们使用 STM32CubeMX 生成 MDK-ARM 代码后，编译出现 *** Targ">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/yingkecheng/my_blog_pic/main/2023.4/Arm%20Compiler%205%20%E9%80%89%E6%8B%A9%E5%AE%89%E8%A3%85%E7%89%88%E6%9C%AC.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yingkecheng/my_blog_pic/main/2023.4/%E8%AE%BE%E7%BD%AE%20Arm%20Compiler%205%20%E8%B7%AF%E5%BE%84.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/yingkecheng/my_blog_pic/main/2023.4/%E6%B7%BB%E5%8A%A0%20ArmCC%20%E8%B7%AF%E5%BE%84.png">
+<meta property="article:published_time" content="2023-04-08T11:43:24.000Z">
+<meta property="article:modified_time" content="2023-04-21T00:33:14.887Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="软件配置">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/yingkecheng/my_blog_pic/main/2023.4/Arm%20Compiler%205%20%E9%80%89%E6%8B%A9%E5%AE%89%E8%A3%85%E7%89%88%E6%9C%AC.png">
+
+
+<link rel="canonical" href="http://example.com/2023/04/08/5-38-Keil%E4%B8%8EArm-Compiler-5%E5%AE%89%E8%A3%85/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2023/04/08/5-38-Keil%E4%B8%8EArm-Compiler-5%E5%AE%89%E8%A3%85/","path":"2023/04/08/5-38-Keil与Arm-Compiler-5安装/","title":"Keil 5.38 与 Arm Compiler 5 安装"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Keil 5.38 与 Arm Compiler 5 安装 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hexo</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Keil-5-38-%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">Keil 5.38 安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Arm-Compiler-5-%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">Arm Compiler 5 安装</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/04/08/5-38-Keil%E4%B8%8EArm-Compiler-5%E5%AE%89%E8%A3%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Keil 5.38 与 Arm Compiler 5 安装 | Hexo">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Keil 5.38 与 Arm Compiler 5 安装
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-04-08 19:43:24" itemprop="dateCreated datePublished" datetime="2023-04-08T19:43:24+08:00">2023-04-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-04-21 08:33:14" itemprop="dateModified" datetime="2023-04-21T08:33:14+08:00">2023-04-21</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Keil-5-38-安装"><a href="#Keil-5-38-安装" class="headerlink" title="Keil 5.38 安装"></a>Keil 5.38 安装</h1><p>最近在给电脑安装Keil MDK的时候，使用原来的 keygen.exe 后，发现编译代码会出现的问题，这是因为 keygen.exe 产生的 license 到 2020 过期，可以在网络上搜索 keygen2032 相关软件，它产生的 license 可以使用至 2032 年。</p>
+<p>当我们使用 STM32CubeMX 生成 MDK-ARM 代码后，编译出现 <code>*** Target &#39;firmware&#39; uses ARM-Compiler &#39;V5.06 update 7 (build 960)&#39; which is not available</code> 的错误，原因在于 5.38 版本的 Keil 已经没有默认的 Arm Compiler 5 了，我们需要为 Keil 安装 Arm Compiler 5。</p>
+<h1 id="Arm-Compiler-5-安装"><a href="#Arm-Compiler-5-安装" class="headerlink" title="Arm Compiler 5 安装"></a>Arm Compiler 5 安装</h1><p><a target="_blank" rel="noopener" href="https://developer.arm.com/documentation/ka005198/latest">Arm Compiler downloads index</a> 可以下载 Arm Compiler 各个版本的编译器，选择 Arm Compiler 5.06 update 7 (build 960)。</p>
+<p><img src="https://raw.githubusercontent.com/yingkecheng/my_blog_pic/main/2023.4/Arm%20Compiler%205%20%E9%80%89%E6%8B%A9%E5%AE%89%E8%A3%85%E7%89%88%E6%9C%AC.png" alt="Arm Compiler 5 选择安装版本"></p>
+<p>下载完成后解压，运行 setup.exe ，设置安装路径，我这里设置的路径为 <code>D:\Tools\ARM_Compiler_5.06u7\</code>，不与 Keil 安装在同一路径下。打开 Keil，进入 <code>Project &gt; Manage &gt; Project Items</code>，在 Folders&#x2F;Extensions 页，Use ARM Compiler 行下添加此前安装的 Arm Compiler 5 路径，如下图。</p>
+<p><img src="https://raw.githubusercontent.com/yingkecheng/my_blog_pic/main/2023.4/%E8%AE%BE%E7%BD%AE%20Arm%20Compiler%205%20%E8%B7%AF%E5%BE%84.png" alt="设置 Arm Compiler 5 路径"></p>
+<p><img src="https://raw.githubusercontent.com/yingkecheng/my_blog_pic/main/2023.4/%E6%B7%BB%E5%8A%A0%20ArmCC%20%E8%B7%AF%E5%BE%84.png" alt="添加 ArmCC 路径"></p>
+<p>设置完成后进行编译，还是可以看到原来的错误，原因是独立下载的 Arm Compiler 5 没有进行破解，最简单的方法是重新安装 Arm Compiler 5，将安装路径设置为 MDK-ARM 安装路径下的文件夹 Arm。按照如上操作，再重新编译即可成功。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%BD%AF%E4%BB%B6%E9%85%8D%E7%BD%AE/" rel="tag"># 软件配置</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/04/16/%E5%86%85%E5%AD%98%E5%AF%B9%E9%BD%90%E4%B8%8E-aligned/" rel="next" title="内存对齐与 aligned">
+                  内存对齐与 aligned <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mermaid/9.4.3/mermaid.min.js","integrity":"sha256-e0o3JYsdjqKajf9eOe22FhioYSz9WofRY4dLKo3F6do="}}</script>
+  <script src="/js/third-party/tags/mermaid.js"></script>
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
